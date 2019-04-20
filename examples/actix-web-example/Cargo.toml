@@ -7,8 +7,8 @@ edition = "2018"
 [dependencies]
 actix-web = "1.0.0-alpha.6"
 futures = "0.1"
-futures03 = { package = "futures-preview", version = "0.3.0-alpha.14", features = ["compat"] }
-actix_web_async_compat = { git = "https://github.com/saks/actix_web_async_compat.git" }
 tokio = "0.1"
 hyper = "0.12"
-# actix_web_async_compat = { path = "../../" }
+tokio-async-await = { git = "https://github.com/tokio-rs/tokio.git", features = [ "async-await-preview" ] }
+# actix_web_async_compat = { git = "https://github.com/saks/actix_web_async_compat.git" }
+actix_web_async_compat = { path = "../../" }

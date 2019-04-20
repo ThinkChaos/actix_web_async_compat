@@ -9,7 +9,8 @@ This crate allows using nightly async/await features with the latest actix-web v
 use actix_web::{get, web, App, Error, HttpRequest, HttpResponse, HttpServer, Result};
 use actix_web_async_compat::async_compat;
 use futures::Future;
-use futures03::compat::Future01CompatExt;
+use tokio_async_await::await;
+use std::time::{Duration, Instant};
 
 #[get("/welcome")]
 #[async_compat]
@@ -19,12 +20,11 @@ async fn index(req: HttpRequest) -> Result<HttpResponse> {
 }
 
 #[async_compat]
-async fn index2(_req: HttpRequest) -> Result<HttpResponse> {
-    use std::time::{Duration, Instant};
+async fn index2() -> Result<HttpResponse> {
     use tokio::timer::Delay;
 
     // Wait 2s
-    await!(Delay::new(Instant::now() + Duration::from_secs(2)).compat())?;
+    await!(Delay::new(Instant::now() + Duration::from_secs(2)))?;
 
     Ok(HttpResponse::Ok().body("OK"))
 }

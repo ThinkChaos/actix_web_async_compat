@@ -95,10 +95,8 @@ pub fn async_compat(_: TokenStream, input: TokenStream) -> TokenStream {
 
     // Build the output, possibly using quasi-quotation
     let expanded = quote! {
-        use futures03::future::{FutureExt as _, TryFutureExt as _};
-
         fn #fn_name(#original_fn_inputs) -> impl Future<Item = #return_type, Error = Error> {
-            #backup_fn_name(#fn_args).boxed().compat()
+            tokio_async_await::compat::backward::Compat::new(#backup_fn_name(#fn_args))
         }
 
         async fn #backup_fn_name(#original_fn_inputs) #original_fn_return_type #original_fn_block

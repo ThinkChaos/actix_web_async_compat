@@ -3,7 +3,8 @@
 use actix_web::{get, web, App, Error, HttpRequest, HttpResponse, HttpServer, Result};
 use actix_web_async_compat::async_compat;
 use futures::Future;
-use futures03::compat::Future01CompatExt;
+use tokio_async_await::await;
+
 use hyper::Client;
 use std::{
     io,
@@ -17,19 +18,17 @@ async fn index() -> Result<HttpResponse> {
     let client = Client::new();
     let uri = "http://httpbin.org/ip".parse().unwrap();
 
-    let response = await!({ client.get(uri).timeout(Duration::from_secs(10)).compat() }).unwrap();
+    let response = await!({ client.get(uri).timeout(Duration::from_secs(10)) }).unwrap();
 
     println!("Response: {}", response.status());
 
     let mut body = response.into_body();
 
-    await!(body
-        .for_each(|chunk| {
-            io::stdout()
-                .write_all(&chunk)
-                .map_err(|e| panic!("example expects stdout is open, error={}", e))
-        })
-        .compat())
+    await!(body.for_each(|chunk| {
+        io::stdout()
+            .write_all(&chunk)
+            .map_err(|e| panic!("example expects stdout is open, error={}", e))
+    }))
     .unwrap();
 
     Ok(HttpResponse::Ok().body("OK"))
@@ -40,7 +39,7 @@ async fn index2(_req: HttpRequest) -> Result<HttpResponse> {
     use tokio::timer::Delay;
 
     // Wait 2s
-    await!(Delay::new(Instant::now() + Duration::from_secs(2)).compat())?;
+    await!(Delay::new(Instant::now() + Duration::from_secs(2)))?;
 
     Ok(HttpResponse::Ok().body("OK"))
 }
