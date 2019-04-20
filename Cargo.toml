@@ -1,0 +1,14 @@
+[package]
+name = "actix_web_async_compat"
+version = "0.1.0"
+authors = ["Aliaksandr Rahalevich <saksmlz@gmail.com>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "0.4"
+syn = { version = "0.15", features = ["full", "printing"] }
+quote = "0.6"
+futures03 = { package = "futures-preview", version = "0.3.0-alpha.14", features = ["compat"] }
