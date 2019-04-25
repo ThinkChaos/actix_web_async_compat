@@ -11,4 +11,4 @@ proc-macro = true
 proc-macro2 = "0.4"
 syn = { version = "0.15", features = ["full", "printing"] }
 quote = "0.6"
-tokio-async-await = { git = "https://github.com/tokio-rs/tokio.git", features = [ "async-await-preview" ] }
+tokio-async-await = "0.1"
