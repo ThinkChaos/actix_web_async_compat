@@ -1,4 +1,4 @@
-#![feature(await_macro, futures_api, async_await)]
+#![feature(await_macro, async_await)]
 
 use actix_web::{get, web, App, Error, HttpRequest, HttpResponse, HttpServer, Result};
 use actix_web_async_compat::async_compat;
