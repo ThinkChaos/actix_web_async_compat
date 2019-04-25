@@ -78,28 +78,28 @@ fn guess_fn_args(inputs: &Punctuated<FnArg, Comma>) -> proc_macro2::TokenStream 
 }
 
 #[proc_macro_attribute]
-pub fn async_compat(_: TokenStream, input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as syn::ItemFn);
+pub fn async_compat(_: TokenStream, handler: TokenStream) -> TokenStream {
+    let handler = parse_macro_input!(handler as syn::ItemFn);
 
-    let fn_name = &input.ident;
-    let backup_fn_name = format!("__async_{}", fn_name.to_string());
-    let backup_fn_name = Ident::new(&backup_fn_name, Span::call_site());
+    let handler_name = &handler.ident;
+    let backup_handler_name = format!("__async_{}", handler.ident.to_string());
+    let backup_handler_name = Ident::new(&backup_handler_name, Span::call_site());
 
-    let original_fn_decl = &input.decl;
-    let original_fn_return_type = &original_fn_decl.output;
-    let original_fn_block = &input.block;
-    let original_fn_inputs = &original_fn_decl.inputs;
-    let return_type = guess_return_type(original_fn_decl);
+    let handler_decl = &handler.decl;
+    let handler_output = &handler_decl.output;
+    let handler_block = &handler.block;
+    let handler_inputs = &handler_decl.inputs;
+    let return_type = guess_return_type(handler_decl);
 
-    let fn_args = guess_fn_args(original_fn_inputs);
+    let fn_args = guess_fn_args(handler_inputs);
 
     // Build the output, possibly using quasi-quotation
     let expanded = quote! {
-        fn #fn_name(#original_fn_inputs) -> impl Future<Item = #return_type, Error = Error> {
-            tokio_async_await::compat::backward::Compat::new(#backup_fn_name(#fn_args))
+        fn #handler_name(#handler_inputs) -> impl Future<Item = #return_type, Error = Error> {
+            tokio_async_await::compat::backward::Compat::new(#backup_handler_name(#fn_args))
         }
 
-        async fn #backup_fn_name(#original_fn_inputs) #original_fn_return_type #original_fn_block
+        async fn #backup_handler_name(#handler_inputs) #handler_output #handler_block
     };
 
     // debug:
