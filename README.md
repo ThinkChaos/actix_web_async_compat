@@ -1,10 +1,9 @@
-This crate allows using nightly async/await features with the latest actix-web version
-(1.0.0-alpha.6).
+This crate allows using nightly async/await features with the latest [actix-web](https://crates.io/crates/actix-web) version (1.0.0-beta.3).
 
 ### Example
 
 ```rust
-#![feature(await_macro, futures_api, async_await)]
+#![feature(await_macro, async_await)]
 
 use actix_web::{get, web, App, Error, HttpRequest, HttpResponse, HttpServer, Result};
 use actix_web_async_compat::async_compat;

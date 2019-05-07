@@ -5,7 +5,7 @@ authors = ["Aliaksandr Rahalevich <saksmlz@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-actix-web = "1.0.0-beta.2"
+actix-web = "1.0.0-beta.3"
 futures = "0.1"
 tokio = "0.1"
 hyper = "0.12"
