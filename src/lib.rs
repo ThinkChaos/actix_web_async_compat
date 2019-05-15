@@ -96,7 +96,7 @@ pub fn async_compat(_: TokenStream, handler: TokenStream) -> TokenStream {
     // Build the output, possibly using quasi-quotation
     let expanded = quote! {
         fn #handler_name(#handler_inputs) -> impl Future<Item = #return_type, Error = Error> {
-            tokio_async_await::compat::backward::Compat::new(#backup_handler_name(#fn_args))
+            #backup_handler_name(#fn_args).boxed().compat()
         }
 
         async fn #backup_handler_name(#handler_inputs) #handler_output #handler_block

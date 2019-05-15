@@ -5,10 +5,10 @@ authors = ["Aliaksandr Rahalevich <saksmlz@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-actix-web = "1.0.0-beta.3"
-futures = "0.1"
-tokio = "0.1"
+actix-web = "1.0.0-beta.5"
+futures03 = { package = "futures-preview", version = "0.3.0-alpha.16", features = ["compat"] }
 hyper = "0.12"
-tokio-async-await = { version = "0.1", features = [ "async-await-preview" ] }
+tokio = "0.1"
 # actix_web_async_compat = { git = "https://github.com/saks/actix_web_async_compat.git" }
 actix_web_async_compat = { path = "../../" }
+serde = { version = "1.0", features = ["derive"] }
