@@ -57,15 +57,13 @@ async fn index2(form: actix_web::web::Form<UserForm>) -> Result<HttpResponse> {
     Ok(HttpResponse::Ok().body("OK"))
 }
 
-fn main() {
+fn main() -> io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .wrap(actix_web::middleware::Logger::default())
             .service(index)
             .service(web::resource("/welcome2").route(web::post().to_async(index2)))
     })
-    .bind("127.0.0.1:8080")
-    .unwrap()
+    .bind("127.0.0.1:8088")?
     .run()
-    .unwrap();
 }
