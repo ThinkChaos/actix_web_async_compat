@@ -2,3 +2,7 @@
 /examples/**/target
 **/*.rs.bk
 Cargo.lock
+
+# IDEA files
+.idea/
+*.iml
