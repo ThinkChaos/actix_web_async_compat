@@ -62,7 +62,7 @@ pub fn async_compat(_: TokenStream, handler: TokenStream) -> TokenStream {
 
     // Build the output, possibly using quasi-quotation
     let expanded = quote! {
-        fn #handler_name(#handler_inputs) -> impl Future<Item = #return_type, Error = Error> {
+        fn #handler_name(#handler_inputs) -> impl ::futures::Future<Item = #return_type, Error = ::actix_web::Error> {
             async move #handler_block .boxed().compat()
         }
     };
