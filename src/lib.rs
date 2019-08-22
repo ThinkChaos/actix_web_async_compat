@@ -21,7 +21,25 @@ fn guess_return_type(decl: &Box<syn::FnDecl>) -> Ident {
                 let mut tokens = p.path.segments.clone().into_token_stream().into_iter();
 
                 if let Some(token_tree) = tokens.next() {
-                    if let TokenTree::Ident(i) = token_tree {
+                    if let TokenTree::Ident(mut i) = token_tree {
+                        if i == "actix_web" {
+                            for _ in 0..2 {
+                                let token_tree = tokens.next().expect("expected ':'");
+                                if let TokenTree::Punct(p) = token_tree {
+                                    if p.as_char() != ':' {
+                                        panic!("expected return type to be 'actix_web::Result<_>'");
+                                    }
+                                }
+                                else {
+                                    panic!("expected return type to be 'actix_web::Result<_>'");
+                                }
+                            }
+
+                            match tokens.next() {
+                                Some(TokenTree::Ident(i_)) => i = i_,
+                                _ => panic!("expected return type to be 'actix_web::Result<_>'"),
+                            }
+                        }
                         if i != "Result" {
                             panic!("should be Result ident");
                         }
